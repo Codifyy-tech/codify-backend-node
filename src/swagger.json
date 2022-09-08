@@ -1,0 +1,379 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Codify - API",
+        "description": "API referente ao Codify",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000/api",
+            "description": "Servidor Local"
+        }
+    ],
+    "paths": {
+        "/auth": {
+            "post": {
+                "summary": "Autenticar Usuário",
+                "description": "Essa rota é responsável por autenticar um usuário no sistema.",
+                "tags": [
+                    "Account"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "Exemplo 1 ": {
+                                    "value": {
+                                        "email": "david1010@gmail.com",
+                                        "password": "i832$L9Vzz"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuário autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "Exemplo 1": {
+                                        "value": {
+                                            "token": "eyJhbGciOiJIUzI1NiI@Sdasd@kpXVCJ9.eyJpZCI6IjYyYmU2YmEwNjFlZjcwZjhiY2JkYzJkYyIsImVtYWlsIjoiZGF2aWRhdWd1c3RvQGdtYWlsLmNvbSIsIm5hbWUiOiJEYXZpZCBBdWd1c3RvIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNjU2NjQ4OTY4LCJleHAiOjE2NTY3MzUzNjh9.klYfOO690cgu6w1GNheAaC8b4HHjXmKMqsJYQx7mAJU"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Falha ao autenticar usuário",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "message": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "Caso 1 - Campos não preenchidos": {
+                                        "value": [
+                                            {
+                                                "message": "O campo e-mail não pode ser vazio"
+                                            },
+                                            {
+                                                "message": "O campo senha não pode ser vazio"
+                                            }
+                                        ]
+                                    },
+                                    "Caso 2 - Usuário não encontrado": {
+                                        "value": {
+                                            "message": "Usuário não encontrado"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "summary": "Cadastrar Usuário",
+                "description": "Essa rota é responsável por cadastrar um usuário.",
+                "tags": [
+                    "Account"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "Exemplo 1": {
+                                    "value": {
+                                        "name": "Emanuel José Freitas",
+	                                    "email": "emanueljosefreitas@bakerhughes.com",
+	                                    "phone": "6838224556",
+	                                    "password": "DAVID1010",
+	                                    "confirm_password": "DAVID1010",
+	                                    "birth_date": "02/06/1999",
+	                                    "genre": "H",
+	                                    "cep": "69915222",
+	                                    "address": "Rua São Pedro",
+	                                    "city": "Rio Branco",
+	                                    "district": "Nova Esperança",
+	                                    "state": "AC"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário cadastrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "Cadastro com sucesso": {
+                                        "value": {
+                                            "message": "Usuário cadastrado com sucesso",
+                                            "token": "eyJhbGciOiJIUzI1NiI@Sdasd@kpXVCJ9.eyJpZCI6IjYyYmU2YmEwNjFlZjcwZjhiY2JkYzJkYyIsImVtYWlsIjoiZGF2aWRhdWd1c3RvQGdtYWlsLmNvbSIsIm5hbWUiOiJEYXZpZCBBdWd1c3RvIiwicm9sZXMiOlsiYWRtaW4iXSwiaWF0IjoxNjU2NjQ4OTY4LCJleHAiOjE2NTY3MzUzNjh9.klYfOO690cgu6w1GNheAaC8b4HHjXmKMqsJYQx7mAJU"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Falha ao autenticar usuário",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "message": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "Caso 1 - Campos não preenchidos": {
+                                        "value": [
+                                            {
+                                                "message": "O campo nome não pode ser vazio"
+                                            },
+                                            {
+                                                "message": "E-mail inválido"
+                                            },
+                                            {
+                                                "message": "Gênero inválido"
+                                            },
+                                            {
+                                                "message": "O campo data de nascimento não pode ser vazio"
+                                            },
+                                            {
+                                                "message": "O campo endereço não pode ser vazio"
+                                            },
+                                            {
+                                                "message": "O campo cep não pode ser vazio"
+                                            },
+                                            {
+                                                "message": "O campo cidade não pode ser vazio"
+                                            },
+                                            {
+                                                "message": "O campo bairro não pode ser vazio"
+                                            },
+                                            {
+                                                "message": "Estado Inválido"
+                                            },
+                                            {
+                                                "message": "O campo senha não pode ser vazio"
+                                            },
+                                            {
+                                                "message": "O campo confirmação de senha não pode ser vazio"
+                                            },
+                                            {
+                                                "message": "As senhas não correspondem"
+                                            }
+                                        ]
+                                    },
+                                    "Caso 2 - Usuário não encontrado": {
+                                        "value": {
+                                            "message": "Usuário não encontrado"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Token inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "Exemplo 1": {
+                                        "value": {
+                                            "message": "Token inválido"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Acesso restrito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "Exemplo 1": {
+                                        "value": {
+                                            "message": "Acesso restrito"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "password": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "crp": {
+                        "type": "Number"
+                    },
+                    "cpf": {
+                        "type": "Number",
+                        "required": true,
+                        "unique": true
+                    },
+                    "phone_number": {
+                        "type": "Number"
+                    },
+                    "email": {
+                        "type": "String",
+                        "required": true,
+                        "unique": true
+                    },
+                    "genre": {
+                        "type": "String",
+                        "enum": [
+                            "HM",
+                            "M",
+                            "NB",
+                            "NR"
+                        ]
+                    },
+                    "birth_date": {
+                        "type": "Date",
+                        "required": true
+                    },
+                    "address": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "city": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "state": {
+                        "type": "String",
+                        "required": true,
+                        "enum": [
+                            "AC",
+                            "AL",
+                            "AP",
+                            "AM",
+                            "BA",
+                            "CE",
+                            "DF",
+                            "ES",
+                            "GO",
+                            "MA",
+                            "MT",
+                            "MS",
+                            "MG",
+                            "PA",
+                            "PB",
+                            "PR",
+                            "PE",
+                            "PI",
+                            "RJ",
+                            "RN",
+                            "RS",
+                            "RO",
+                            "RR",
+                            "SC",
+                            "SP",
+                            "SE",
+                            "TO"
+                        ]
+                    },
+                    "user_typ": {
+                        "type": "String",
+                        "require": true,
+                        "enum": [
+                            "patient",
+                            "professional",
+                            "admin"
+                        ]
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

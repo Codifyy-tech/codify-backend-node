@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/87216c3f-c762-4f55-ba35-cfbc88dde054/microsoft.web/sites/subscriptions/87216c3f-c762-4f55-ba35-cfbc88dde054/resourceGroups/Codifyy_group/providers/Microsoft.Web/sites/Codifyy",
+    "appService.deploySubpath": "."
+}
