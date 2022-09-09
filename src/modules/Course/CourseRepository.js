@@ -1,37 +1,36 @@
 const { ObjectId } = require('mongodb');
-const User = require('./User');
+const Course = require('./Course');
 
-exports.create = async (userInfo) => {
-    const userAlreadyExists = await User.findOne({ email: userInfo.email });
+exports.create = async (CourseInfo) => {
+    const CourseAlreadyExists = await Course.findOne({ url: CourseInfo.url });
 
-    if (!userAlreadyExists) {
-        await User.create(userInfo);
+    if (!CourseAlreadyExists) {
+        await Course.create(CourseInfo);
     } else {
-        throw new Error("E-mail já cadastrado");
+        throw new Error("Curso já cadastrado");
     }
 };
 
-exports.findOne = async (userInfo, projection) => {
-    const userExists = await User.findOne(userInfo, projection);
+exports.findOne = async (CourseInfo, projection) => {
+    const CourseExists = await Course.findOne(CourseInfo, projection);
 
-    if (!userExists) {
+    if (!CourseExists) {
         throw new Error("Usuário não encontrado");
     } else {
-        return userExists
+        return CourseExists
     }
 }
 
 exports.find = async (filter, pageSize, page, projection) => {
-    return await User.find(filter, projection)
-        .sort({ active: -1 })
+    return await Course.find(filter, projection)
         .skip(page > 0 ? ((page - 1) * pageSize) : 0)
         .limit(pageSize)
 }
 
-exports.update = async (userId, userInfo) => {
-    return await User.findByIdAndUpdate({ _id: ObjectId(userId) }, userInfo);
+exports.update = async (CourseId, CourseInfo) => {
+    return await Course.findByIdAndUpdate({ _id: ObjectId(CourseId) }, CourseInfo);
 }
 
-exports.delete = async (userId) => {
-    return await User.findOneAndDelete({ _id: ObjectId(id) });
+exports.delete = async (CourseId) => {
+    return await Course.findOneAndDelete({ _id: ObjectId(id) });
 }

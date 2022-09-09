@@ -12,17 +12,23 @@ const schema = new Schema({
     description: {
         type: String,
         required: true,
-        unique: true,
     },
     category:{
-        type: Number,
+        type: String,
+        required: true
     },
     technology: {
         type: String,
         required: true
     },
-    topic: {
-        type: Array
+    topics: {
+        type: Array,
+        required: true
+    },
+    url: {
+        type: String,
+        required: true,
+        unique: true
     }
 });
 

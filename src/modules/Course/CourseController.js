@@ -9,7 +9,8 @@ exports.registerCourse = async (req, res) => {
         description, 
         category, 
         technology, 
-        topic } = req.body;
+        topics, 
+        url } = req.body;
 
     let contract = new ValidationContract();
     contract.isRequired(title, 'O campo título não pode ser vazio');
@@ -17,7 +18,8 @@ exports.registerCourse = async (req, res) => {
     contract.isRequired(description, 'O campo descrição não pode ser vazio');
     contract.isRequired(category, 'O campo categoria não pode ser vazio');
     contract.isRequired(technology, 'O campo tecnologia não pode ser vazio');
-    contract.isRequired(topic, 'O campo tópicos não pode ser vazio');
+    contract.isRequired(topics, 'O campo tópicos não pode ser vazio');
+    contract.isRequired(url, 'O campo url não pode ser vazio');
 
     if (!contract.isValid()) {
         res.status(400).send(contract.errors()).end();
@@ -31,7 +33,9 @@ exports.registerCourse = async (req, res) => {
             description, 
             category, 
             technology, 
-            topic });
+            topics,
+            url
+         });
 
         res.status(201).json({
             message: 'Curso cadastrado com sucesso',
@@ -43,16 +47,33 @@ exports.registerCourse = async (req, res) => {
     }
 };
 
-exports.infoUser = async (req, res) => {
-    let current_user = req.user;
+exports.infoCourse = async (req, res) => {
+    let {id} = req.params;
 
     try {
-        const userInfo = await UserRepository.findOne({
-            _id: current_user
-        }, { name: 1, email: 1, firstLetter: 1});
+        const courseInfo = await CourseRepository.findOne({
+            _id: id
+        });
 
         res.status(200).send({
-            data: userInfo,
+            data: courseInfo,
+        });
+    } catch (e) {
+        res.status(400).json({ message: e.message });
+    }
+}
+
+exports.listCourse = async (req, res) => {
+    let {id} = req.params;
+    let {category} = req.query;
+
+    try {
+        const courseInfo = await CourseRepository.find({
+            category
+        });
+
+        res.status(200).send({
+            data: courseInfo,
         });
     } catch (e) {
         res.status(400).json({ message: e.message });

@@ -34,7 +34,7 @@ exports.CheckOwn = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.SALT_KEY );
         const userExists = await UserService.checkUserIsValid(decoded._id);
 
-        if (userExists.user_type === 'admin' || decoded._id == id) {
+        if (userExists.type === 'admin' || decoded._id == id) {
             next();
         } else {
             res.status(403).json({
@@ -54,7 +54,7 @@ exports.checkAdmin = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.SALT_KEY );
         const userExists = await UserService.checkUserIsValid(decoded._id);
 
-        if (userExists.user_type === 'user' || userExists.user_type === 'admin') {
+        if (userExists.type === 'user' || userExists.type === 'admin') {
             next();
         } else {
             res.status(403).json({
