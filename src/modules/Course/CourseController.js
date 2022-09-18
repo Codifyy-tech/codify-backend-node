@@ -1,6 +1,8 @@
 const ValidationContract = require('../../services/validatorService');
 const UserRepository = require('./CourseRepository');
 const CourseRepository = require('./CourseRepository');
+const ClassService = require('../Class/ClassService');
+const UserClassService = require('../User_Class/UserClassService');
 
 exports.registerCourse = async (req, res) => {
     let { 
@@ -47,6 +49,31 @@ exports.registerCourse = async (req, res) => {
     }
 };
 
+exports.registerUserCourse = async (req, res) => {
+    let { course_id } = req.body;
+    let user_id = req.user;
+
+    let contract = new ValidationContract();
+    contract.isRequired(course_id, 'O campo curso não pode ser vazio');
+
+    if (!contract.isValid()) {
+        res.status(400).send(contract.errors()).end();
+        return;
+    }
+
+    try {
+        await UserClassService.registerUserIntoCourse(course_id, user_id);
+
+        res.status(201).json({
+            message: 'Inscrito com sucesso',
+        });
+    } catch (e) {
+        res.status(400).json({
+            message: e.message
+        });
+    }
+};
+
 exports.infoCourse = async (req, res) => {
     let {id} = req.params;
 
@@ -74,6 +101,20 @@ exports.listCourse = async (req, res) => {
 
         res.status(200).send({
             data: courseInfo,
+        });
+    } catch (e) {
+        res.status(400).json({ message: e.message });
+    }
+}
+
+exports.infoClass = async (req, res) => {
+    let {id} = req.params;
+
+    try {
+        let classesInfo = await ClassService.getClass(id);
+
+        res.status(200).send({
+            data: classesInfo,
         });
     } catch (e) {
         res.status(400).json({ message: e.message });

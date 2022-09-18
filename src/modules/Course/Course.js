@@ -18,8 +18,18 @@ const schema = new Schema({
         required: true
     },
     technology: {
-        type: String,
-        required: true
+        name: {
+            type: String,
+            required: true
+        },
+        color: {
+            type: String,
+            required: true
+        },
+        icon: {
+            type: String,
+            required: true
+        }
     },
     topics: {
         type: Array,
