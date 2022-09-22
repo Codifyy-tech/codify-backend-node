@@ -1,4 +1,5 @@
 const ValidationContract = require('../../services/validatorService');
+const UserClassService = require('../User_Class/UserClassService');
 const AuthService = require('../../services/authService');
 const UserRepository = require('./UserRepository');
 const UserService = require('./UserService');
@@ -134,15 +135,18 @@ exports.infoUser = async (req, res) => {
             _id: current_user
         }, { name: 1, email: 1, firstLetter: 1});
 
+        const courses_registered = await UserClassService.getRegisteredUserCourses(current_user);
+
         res.status(200).send({
-            data: userInfo,
+            userInfo,
+            courses_registered
         });
     } catch (e) {
         res.status(400).json({ message: e.message });
     }
 }
 
-exports.EditInfo = async (req, res) => {
+exports.editInfo = async (req, res) => {
     let current_user = req.user;
     let { current_password, new_password, confirm_new_password } = req.body;
 

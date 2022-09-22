@@ -12,3 +12,11 @@ exports.create = async (ClassInfo) => {
         await UserClass.create(ClassInfo);
     }
 };
+
+exports.findByUser = async (user_id, projection) => {
+    let courses = await UserClass.find({
+        user_id: user_id
+    }, projection);
+
+    return courses;
+}

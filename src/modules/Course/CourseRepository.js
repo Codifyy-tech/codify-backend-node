@@ -31,6 +31,6 @@ exports.update = async (CourseId, CourseInfo) => {
     return await Course.findByIdAndUpdate({ _id: ObjectId(CourseId) }, CourseInfo);
 }
 
-exports.delete = async (CourseId) => {
+exports.delete = async (id) => {
     return await Course.findOneAndDelete({ _id: ObjectId(id) });
 }
