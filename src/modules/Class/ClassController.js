@@ -1,5 +1,6 @@
 const ValidationContract = require('../../services/validatorService');
 const ClassRepository = require('./ClassRepository');
+const UserClassService = require('../User_Class/UserClassService');
 
 exports.registerClass = async (req, res) => {
     let {
@@ -36,6 +37,43 @@ exports.registerClass = async (req, res) => {
 
         res.status(201).json({
             message: 'Aula cadastrada com sucesso',
+        });
+    } catch (e) {
+        res.status(400).json({
+            message: e.message
+        });
+    }
+};
+
+exports.listClasses = async (req, res) => {
+    let { id } = req.params;
+    let current_user = req.user;
+
+    try {
+        let classes = await UserClassService.listClassesUserCourse(current_user, id);
+
+        res.status(201).json({
+            data: classes,
+        });
+    } catch (e) {
+        res.status(400).json({
+            message: e.message
+        });
+    }
+};
+
+exports.editClass = async (req, res) => {
+    let { id } = req.params;
+    let current_user = req.user;
+    let { watched } = req.body;
+
+    try {
+        await UserClassService.editClassUserCourse(current_user, id, {
+            watched
+        });
+
+        res.status(201).json({
+            message: "Aula alterada com sucesso",
         });
     } catch (e) {
         res.status(400).json({
