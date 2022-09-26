@@ -1,39 +1,35 @@
 const ValidationContract = require('../../services/validatorService');
 const ClassRepository = require('./ClassRepository');
 const UserClassService = require('../User_Class/UserClassService');
+const axios = require('axios');
 
 exports.registerClass = async (req, res) => {
-    let {
-        title,
-        number,
-        course_id,
-        description,
-        duration,
-        url,
-        watched } = req.body;
+    let { items, course_id } = req.body;
 
-    let contract = new ValidationContract();
-    contract.isRequired(title, 'O campo título não pode ser vazio');
-    contract.isRequired(number, 'O campo número não pode ser vazio');
-    contract.isRequired(course_id, 'O campo curso não pode ser vazio');
-    contract.isRequired(description, 'O campo descrição não pode ser vazio');
-    contract.isRequired(duration, 'O campo duração não pode ser vazio');
-    contract.isRequired(url, 'O campo url não pode ser vazio');
+    let list_class = [];
 
-    if (!contract.isValid()) {
-        res.status(400).send(contract.errors()).end();
-        return;
+    for (let i in items) {
+
+        try {
+            var video = await axios.get(`https://youtube.googleapis.com/youtube/v3/videos?part=contentDetails&id=${items[i].snippet.resourceId.videoId}&key=AIzaSyC5bCjajo8lmTOHpCTj2JLYCk2im-Ol0cw`);
+        } catch (e) {
+            throw new Error("Vídeo não encontrado")
+        }
+
+        list_class.push({
+            title: items[i].snippet.title,
+            number: items[i].snippet.position,
+            description: items[i].snippet.description ?? "",
+            url: `https://youtu.be/${items[i].snippet.resourceId.videoId}`,
+            author: items[i].snippet.videoOwnerChannelTitle,
+            duration: video.data.items[0].contentDetails.duration,
+            course_id,
+        })
     }
 
     try {
-        await ClassRepository.create({
-            title,
-            number,
-            course_id,
-            description,
-            duration,
-            url
-        });
+
+        await ClassRepository.create(list_class);
 
         res.status(201).json({
             message: 'Aula cadastrada com sucesso',
@@ -48,13 +44,21 @@ exports.registerClass = async (req, res) => {
 exports.listClasses = async (req, res) => {
     let { id } = req.params;
     let current_user = req.user;
+    let qtdwatched = 0;
 
     try {
         let classes = await UserClassService.listClassesUserCourse(current_user, id);
 
+        for (let item of classes) {
+            if(item.watched == true) qtdwatched += 1;
+        }
+
         res.status(201).json({
             data: classes,
+            progress: Math.round((qtdwatched * 100) / classes.length)
         });
+
+        qtdwatched = 0;
     } catch (e) {
         res.status(400).json({
             message: e.message

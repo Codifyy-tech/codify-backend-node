@@ -18,11 +18,10 @@ const schema = new Schema({
         required: true
     },
     description: {
-        type: String,
-        required: true,
+        type: String
     },
     duration: {
-        type: Number,
+        type: String,
         required: true
     },
     url: {

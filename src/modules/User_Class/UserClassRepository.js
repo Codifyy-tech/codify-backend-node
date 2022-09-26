@@ -35,7 +35,7 @@ exports.findByUserAndCourse = async (userId, courseId) => {
     let classes = await UserClass.find({
         user_id: userId,
         course_id: courseId
-    });
+    }).sort({number: 1});
 
     if (classes.length) {
         return classes;
