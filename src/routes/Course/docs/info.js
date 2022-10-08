@@ -1,10 +1,18 @@
 const infoCourse = {
   '/course/{id}': {
     get: {
-      summary: 'Consultar informações de Courso',
+      summary: 'Consultar informações de Curso',
       description:
-        'Essa rota é responsável por exibir as informações cadastras de um determinado curso cadastrado',
+        'Essa rota é responsável por exibir as informações cadastradas de um determinado curso cadastrado',
       tags: ['Course'],
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          description: 'ID da curso',
+          required: true,
+        },
+      ],
       security: [
         {
           bearerAuth: [],
