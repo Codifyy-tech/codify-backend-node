@@ -81,9 +81,6 @@ exports.signUp = async (req, res) => {
   )
   contract.isRequired(address, 'O campo endereço não pode ser vazio')
   contract.isRequired(cep, 'O campo cep não pode ser vazio')
-  contract.isRequired(city, 'O campo cidade não pode ser vazio')
-  contract.isRequired(district, 'O campo bairro não pode ser vazio')
-  contract.isStateValid(state, 'Estado Inválido')
   contract.isRequired(password, 'O campo senha não pode ser vazio')
   contract.isRequired(
     confirm_password,

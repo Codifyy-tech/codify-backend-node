@@ -1,5 +1,5 @@
-const CourseController = require('../modules/Course/CourseController')
-const AuthService = require('../services/authService')
+const CourseController = require('../../modules/Course/CourseController')
+const AuthService = require('../../services/authService')
 const express = require('express')
 const router = express.Router()
 
