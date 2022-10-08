@@ -1,6 +1,7 @@
 const { mongoConnect } = require('./database/mongodb')
 
 const userRoute = require('./routes/User/user.routes')
+const authRoute = require('./routes/Auth/auth.routes')
 const courseRoute = require('./routes/Course/course.routes')
 const classRoute = require('./routes/Class/class.routes')
 const swaggerUi = require('swagger-ui-express')
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }))
 
 // Carregando rotas
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+app.use('/api', authRoute)
 app.use('/api', userRoute)
 app.use('/api', courseRoute)
 app.use('/api', classRoute)

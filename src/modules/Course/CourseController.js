@@ -1,6 +1,5 @@
 const ValidationContract = require('../../services/validatorService')
 const CourseRepository = require('./CourseRepository')
-const ClassService = require('../Class/ClassService')
 const UserClassService = require('../User_Class/UserClassService')
 
 exports.registerCourse = async (req, res) => {
@@ -93,20 +92,6 @@ exports.listCourse = async (req, res) => {
 
     res.status(200).send({
       data: courseInfo,
-    })
-  } catch (e) {
-    res.status(400).json({ message: e.message })
-  }
-}
-
-exports.infoClass = async (req, res) => {
-  const { id } = req.params
-
-  try {
-    const classesInfo = await ClassService.getClass(id)
-
-    res.status(200).send({
-      data: classesInfo,
     })
   } catch (e) {
     res.status(400).json({ message: e.message })

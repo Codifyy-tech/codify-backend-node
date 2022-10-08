@@ -16,10 +16,5 @@ router.post(
 
 router.get('/list/course', AuthService.checkToken, CourseController.listCourse)
 router.get('/course/:id', AuthService.checkToken, CourseController.infoCourse)
-router.get(
-  '/course/class/:id',
-  AuthService.checkToken,
-  CourseController.infoClass,
-)
 
 module.exports = router

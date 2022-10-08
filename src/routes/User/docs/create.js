@@ -57,7 +57,7 @@ const createUser = {
           },
         },
         400: {
-          description: 'Falha ao autenticar usuário',
+          description: 'Falha ao cadastrar usuário',
           content: {
             'application/json': {
               schema: {

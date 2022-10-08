@@ -1,7 +1,8 @@
 const auth = require('./routes/Auth/docs')
 const user = require('./routes/User/docs')
 const userSchema = require('./routes/User/docs/schema')
-
+const course = require('./routes/Course/docs')
+const courseSchema = require('./routes/Course/docs/schema')
 module.exports = {
   openapi: '3.0.0',
   info: {
@@ -22,10 +23,12 @@ module.exports = {
   paths: {
     ...auth,
     ...user,
+    ...course,
   },
   components: {
     schemas: {
       ...userSchema,
+      ...courseSchema,
     },
     securitySchemes: {
       bearerAuth: {
