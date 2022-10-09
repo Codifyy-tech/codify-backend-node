@@ -5,33 +5,21 @@ const schema = new Schema({
     type: String,
     required: true,
   },
-  number: {
-    type: Number,
-    required: true,
-  },
-  user_id: {
-    type: String,
-    required: true,
-  },
-  course_id: {
-    type: String,
-    required: true,
-  },
   description: {
     type: String,
+    required: true,
   },
-  duration: {
+  company_id: {
     type: String,
     required: true,
   },
-  url: {
+  technology_id: {
     type: String,
     required: true,
   },
-  watched: {
-    type: Boolean,
+  level: {
+    type: String,
     required: true,
-    default: false,
   },
 })
 
