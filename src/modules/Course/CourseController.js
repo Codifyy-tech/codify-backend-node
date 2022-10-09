@@ -1,5 +1,6 @@
 const ValidationContract = require('../../services/validatorService')
 const CourseRepository = require('./CourseRepository')
+const TechnologyRepository = require('../Technology/TechnologyRepository')
 const UserClassService = require('../User_Class/UserClassService')
 
 exports.registerCourse = async (req, res) => {
@@ -74,8 +75,21 @@ exports.infoCourse = async (req, res) => {
       _id: id,
     })
 
+    const technology = await TechnologyRepository.findById(
+      courseInfo.technology_id,
+    )
+
     res.status(200).send({
-      data: courseInfo,
+      data: {
+        _id: courseInfo._id,
+        title: courseInfo.title,
+        author: courseInfo.author,
+        technology,
+        description: courseInfo.description,
+        category: courseInfo.category,
+        topics: courseInfo.topics,
+        url: courseInfo.url,
+      },
     })
   } catch (e) {
     res.status(400).json({ message: e.message })
@@ -85,13 +99,32 @@ exports.infoCourse = async (req, res) => {
 exports.listCourse = async (req, res) => {
   const { category } = req.query
 
+  const list_course = []
+
   try {
     const courseInfo = await CourseRepository.find({
       category,
     })
 
+    for (const course of courseInfo) {
+      const technology = await TechnologyRepository.findById(
+        course.technology_id,
+      )
+
+      list_course.push({
+        _id: course._id,
+        title: course.title,
+        author: course.author,
+        technology,
+        description: course.description,
+        category: course.category,
+        topics: course.topics,
+        url: course.url,
+      })
+    }
+
     res.status(200).send({
-      data: courseInfo,
+      data: list_course,
     })
   } catch (e) {
     res.status(400).json({ message: e.message })

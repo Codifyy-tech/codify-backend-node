@@ -1,6 +1,7 @@
 const ClassService = require('../Class/ClassService')
 const UserClassRepository = require('./UserClassRepository')
 const CourseRepository = require('../Course/CourseRepository')
+const TechnologyRepository = require('../Technology/TechnologyRepository')
 
 exports.registerUserIntoCourse = async (courseId, userId) => {
   const classes = await ClassService.getClass(courseId)
@@ -48,8 +49,21 @@ exports.getRegisteredUserCourses = async (userId) => {
       if (item.watched === true) qtdwatched += 1
     }
 
+    const technology = await TechnologyRepository.findById(
+      course_info.technology_id,
+    )
+
     list_course.push({
-      course_info,
+      course_info: {
+        _id: course_info._id,
+        title: course_info.title,
+        author: course_info.author,
+        technology,
+        description: course_info.description,
+        category: course_info.category,
+        topics: course_info.topics,
+        url: course_info.url,
+      },
       progress: Math.round((qtdwatched * 100) / classesTest.length),
     })
   }

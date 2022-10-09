@@ -17,19 +17,9 @@ const schema = new Schema({
     type: String,
     required: true,
   },
-  technology: {
-    name: {
-      type: String,
-      required: true,
-    },
-    color: {
-      type: String,
-      required: true,
-    },
-    icon: {
-      type: String,
-      required: true,
-    },
+  technology_id: {
+    type: String,
+    required: true,
   },
   topics: {
     type: Array,
