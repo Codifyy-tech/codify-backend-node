@@ -4,7 +4,7 @@ const TechnologyRepository = require('../Technology/TechnologyRepository')
 const UserClassService = require('../User_Class/UserClassService')
 
 exports.registerCourse = async (req, res) => {
-  const { title, author, description, category, technology, topics, url } =
+  const { title, author, description, category, technology_id, topics, url } =
     req.body
 
   const contract = new ValidationContract()
@@ -12,7 +12,7 @@ exports.registerCourse = async (req, res) => {
   contract.isRequired(author, 'O campo autor não pode ser vazio')
   contract.isRequired(description, 'O campo descrição não pode ser vazio')
   contract.isRequired(category, 'O campo categoria não pode ser vazio')
-  contract.isRequired(technology, 'O campo tecnologia não pode ser vazio')
+  contract.isRequired(technology_id, 'O campo tecnologia não pode ser vazio')
   contract.isRequired(topics, 'O campo tópicos não pode ser vazio')
   contract.isRequired(url, 'O campo url não pode ser vazio')
 
@@ -27,7 +27,7 @@ exports.registerCourse = async (req, res) => {
       author,
       description,
       category,
-      technology,
+      technology_id,
       topics,
       url,
     })
