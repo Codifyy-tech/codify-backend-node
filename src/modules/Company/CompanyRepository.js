@@ -2,7 +2,8 @@ const { ObjectId } = require('mongodb')
 const Company = require('./Company')
 
 exports.create = async (companyInfo) => {
-  const companyAlreadyExists = await Company.findOne({ cpnj: companyInfo.cpnj })
+  const companyAlreadyExists = await Company.findOne({ cnpj: companyInfo.cnpj })
+
   if (!companyAlreadyExists) {
     await Company.create(companyInfo)
   } else {

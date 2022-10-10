@@ -53,8 +53,8 @@ exports.listPracticalTests = async (req, res) => {
 
   try {
     const filter = {}
-    if (company_id) filter.company_id = company_id
-    if (technology_id) filter.technology_id = technology_id
+    if (company_id) filter.company_id = { $in: company_id }
+    if (technology_id) filter.technology_id = { $in: technology_id }
 
     const practicalTests = await PracticalTestRepository.find(filter)
 
