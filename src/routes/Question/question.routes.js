@@ -10,9 +10,9 @@ router.post(
 )
 
 router.get(
-  '/list/question',
+  '/question/:id',
   AuthService.checkToken,
-  QuestionController.listQuestions,
+  QuestionController.infoQuestion,
 )
 
 module.exports = router

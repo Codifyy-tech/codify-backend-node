@@ -3,10 +3,13 @@ const AnswerRepository = require('../Answer/AnswerRepository')
 const ValidationContract = require('../../services/validatorService')
 
 exports.registerQuestion = async (req, res) => {
-  const { technology_id, description, topic } = req.body
+  const { theory_test_id, description, topic } = req.body
 
   const contract = new ValidationContract()
-  contract.isRequired(technology_id, 'O campo tecnologia não pode ser vazio')
+  contract.isRequired(
+    theory_test_id,
+    'O campo teste teórico não pode ser vazio',
+  )
   contract.isRequired(description, 'O campo descrição não pode ser vazio')
   contract.isRequired(topic, 'O campo tópico não pode ser vazio')
 
@@ -17,7 +20,7 @@ exports.registerQuestion = async (req, res) => {
 
   try {
     await QuestionRepository.create({
-      technology_id,
+      theory_test_id,
       description,
       topic,
     })
@@ -32,16 +35,23 @@ exports.registerQuestion = async (req, res) => {
   }
 }
 
-exports.listQuestions = async (req, res) => {
+exports.infoQuestion = async (req, res) => {
   try {
+    const { id } = req.params
+
     const questionsWithAnswer = []
 
-    const questions = await QuestionRepository.find({})
+    const questions = await QuestionRepository.find({ theory_test_id: id })
 
     for (const question of questions) {
-      const answers = await AnswerRepository.find({}, null, null, {
-        description: 1,
-      })
+      const answers = await AnswerRepository.find(
+        { question_id: question._id },
+        null,
+        null,
+        {
+          description: 1,
+        },
+      )
 
       questionsWithAnswer.push({
         _id: questions.id,
