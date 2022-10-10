@@ -28,3 +28,21 @@ exports.registerTheoryTest = async (req, res) => {
     })
   }
 }
+
+exports.listTheoryTests = async (req, res) => {
+  const { level, technology_id } = req.query
+
+  try {
+    const filter = {}
+    filter.technology_id = { $in: technology_id }
+    filter.level = { $in: level }
+
+    const theoryTests = await TheoryTestRepository.find(filter)
+
+    res.status(200).send({
+      data: theoryTests,
+    })
+  } catch (e) {
+    res.status(400).json({ message: e.message })
+  }
+}

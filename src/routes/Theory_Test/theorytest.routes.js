@@ -9,4 +9,9 @@ router.post(
   TheoryTestRController.registerTheoryTest,
 )
 
+router.get(
+  '/list/theoryTest',
+  AuthService.checkToken,
+  TheoryTestRController.listTheoryTests,
+)
 module.exports = router
