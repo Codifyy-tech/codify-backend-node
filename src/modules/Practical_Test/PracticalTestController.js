@@ -81,3 +81,29 @@ exports.listPracticalTests = async (req, res) => {
     res.status(400).json({ message: e.message })
   }
 }
+
+exports.infoPracticalTests = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const practicalTestsInfo = await PracticalTestRepository.findById(id)
+    const companyInfo = await CompanyRepository.findById(
+      practicalTestsInfo.company_id,
+    )
+    const technologyInfo = await TechnologyRepository.findById(
+      practicalTestsInfo.technology_id,
+    )
+
+    res.status(200).send({
+      _id: practicalTestsInfo._id,
+      title: practicalTestsInfo.title,
+      description: practicalTestsInfo.description,
+      company: companyInfo,
+      technology_id: technologyInfo,
+      repository_url: practicalTestsInfo.repository_url,
+      level: practicalTestsInfo.level,
+    })
+  } catch (e) {
+    res.status(400).json({ message: e.message })
+  }
+}

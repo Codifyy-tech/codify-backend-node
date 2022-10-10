@@ -15,4 +15,10 @@ router.get(
   PracticalTestController.listPracticalTests,
 )
 
+router.get(
+  '/practicalTest/:id',
+  AuthService.checkToken,
+  PracticalTestController.infoPracticalTests,
+)
+
 module.exports = router
