@@ -2,13 +2,13 @@ const PracticalTest = require('./Practical_Test')
 
 exports.create = async (practicalTestInfo) => {
   const testAlreadyExists = await PracticalTest.findOne({
-    url: practicalTestInfo.url,
+    repository_url: practicalTestInfo.repository_url,
   })
 
   if (!testAlreadyExists) {
     await PracticalTest.create(practicalTestInfo)
   } else {
-    throw new Error('Aula já cadastrada')
+    throw new Error('Teste prático já cadastrado')
   }
 }
 
