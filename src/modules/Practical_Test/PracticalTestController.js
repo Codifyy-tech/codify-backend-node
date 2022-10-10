@@ -95,13 +95,15 @@ exports.infoPracticalTests = async (req, res) => {
     )
 
     res.status(200).send({
-      _id: practicalTestsInfo._id,
-      title: practicalTestsInfo.title,
-      description: practicalTestsInfo.description,
-      company: companyInfo,
-      technology_id: technologyInfo,
-      repository_url: practicalTestsInfo.repository_url,
-      level: practicalTestsInfo.level,
+      data: {
+        _id: practicalTestsInfo._id,
+        title: practicalTestsInfo.title,
+        description: practicalTestsInfo.description,
+        company: companyInfo,
+        technology_id: technologyInfo,
+        repository_url: practicalTestsInfo.repository_url,
+        level: practicalTestsInfo.level,
+      },
     })
   } catch (e) {
     res.status(400).json({ message: e.message })
