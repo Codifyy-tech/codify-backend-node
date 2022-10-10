@@ -45,3 +45,17 @@ exports.listCompany = async (req, res) => {
     res.status(400).json({ message: e.message })
   }
 }
+
+exports.infoCompany = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const companyInfo = await CompanyRepository.findById(id)
+
+    res.status(200).send({
+      data: companyInfo,
+    })
+  } catch (e) {
+    res.status(400).json({ message: e.message })
+  }
+}

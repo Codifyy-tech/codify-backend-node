@@ -15,4 +15,10 @@ router.get(
   CompanyController.listCompany,
 )
 
+router.get(
+  '/company/:id',
+  AuthService.checkToken,
+  CompanyController.infoCompany,
+)
+
 module.exports = router
