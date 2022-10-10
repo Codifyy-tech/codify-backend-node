@@ -1,6 +1,7 @@
 const PracticalTestRepository = require('./PracticalTestrepository')
 const ValidationContract = require('../../services/validatorService')
 const TechnologyRepository = require('../Technology/TechnologyRepository')
+const CompanyRepository = require('../Company/CompanyRepository')
 
 exports.registerPracticalTest = async (req, res) => {
   const {
@@ -60,7 +61,7 @@ exports.listPracticalTests = async (req, res) => {
     for (const test of practicalTests) {
       const technology = await TechnologyRepository.findById(test.technology_id)
 
-      const company = await TechnologyRepository.findById(test.technology_id)
+      const company = await CompanyRepository.findById(test.company_id)
 
       list_test.push({
         _id: test._id,
