@@ -1,5 +1,6 @@
 const PracticalTestRepository = require('./PracticalTestrepository')
 const ValidationContract = require('../../services/validatorService')
+const TechnologyRepository = require('../Technology/TechnologyRepository')
 
 exports.registerPracticalTest = async (req, res) => {
   const {
@@ -47,15 +48,33 @@ exports.registerPracticalTest = async (req, res) => {
 exports.listPracticalTests = async (req, res) => {
   const { company_id, technology_id } = req.query
 
+  const list_test = []
+
   try {
     const filter = {}
     if (company_id) filter.company_id = company_id
     if (technology_id) filter.technology_id = technology_id
 
-    const PracticalTests = await PracticalTestRepository.find(filter)
+    const practicalTests = await PracticalTestRepository.find(filter)
+
+    for (const test of practicalTests) {
+      const technology = await TechnologyRepository.findById(test.technology_id)
+
+      const company = await TechnologyRepository.findById(test.technology_id)
+
+      list_test.push({
+        _id: test._id,
+        title: test.title,
+        description: test.description,
+        company,
+        technology,
+        repository_url: test.repository_url,
+        level: test.level,
+      })
+    }
 
     res.status(200).send({
-      data: PracticalTests,
+      data: list_test,
     })
   } catch (e) {
     res.status(400).json({ message: e.message })
