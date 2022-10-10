@@ -9,4 +9,10 @@ router.post(
   PracticalTestController.registerPracticalTest,
 )
 
+router.get(
+  '/list/practicalTest',
+  AuthService.checkToken,
+  PracticalTestController.listPracticalTests,
+)
+
 module.exports = router

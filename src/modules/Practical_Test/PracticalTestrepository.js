@@ -11,3 +11,9 @@ exports.create = async (practicalTestInfo) => {
     throw new Error('Aula já cadastrada')
   }
 }
+
+exports.find = async (filter, pageSize, page, projection) => {
+  return await PracticalTest.find(filter, projection)
+    .skip(page > 0 ? (page - 1) * pageSize : 0)
+    .limit(pageSize)
+}
