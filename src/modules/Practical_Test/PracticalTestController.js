@@ -1,4 +1,4 @@
-const PracticalTestRepository = require('./PracticalTestrepository')
+const PracticalTestRepository = require('./PracticalTestRepository')
 const ValidationContract = require('../../services/validatorService')
 const TechnologyRepository = require('../Technology/TechnologyRepository')
 const CompanyRepository = require('../Company/CompanyRepository')
