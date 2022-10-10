@@ -1,4 +1,5 @@
 const QuestionRepository = require('./QuestionRepository')
+const AnswerRepository = require('../Answer/AnswerRepository')
 const ValidationContract = require('../../services/validatorService')
 
 exports.registerQuestion = async (req, res) => {
@@ -28,5 +29,33 @@ exports.registerQuestion = async (req, res) => {
     res.status(400).json({
       message: e.message,
     })
+  }
+}
+
+exports.listQuestions = async (req, res) => {
+  try {
+    const questionsWithAnswer = []
+
+    const questions = await QuestionRepository.find({})
+
+    for (const question of questions) {
+      const answers = await AnswerRepository.find({}, null, null, {
+        description: 1,
+      })
+
+      questionsWithAnswer.push({
+        _id: questions.id,
+        technology_id: questions.technology_id,
+        description: question.description,
+        topic: questions.topic,
+        answers,
+      })
+    }
+
+    res.status(200).send({
+      data: questionsWithAnswer,
+    })
+  } catch (e) {
+    res.status(400).json({ message: e.message })
   }
 }

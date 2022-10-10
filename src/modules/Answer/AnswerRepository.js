@@ -17,3 +17,13 @@ exports.find = async (filter, pageSize, page, projection) => {
     .skip(page > 0 ? (page - 1) * pageSize : 0)
     .limit(pageSize)
 }
+
+exports.findOne = async (answer_id, projection) => {
+  const userExists = await Answer.findOne(answer_id, projection)
+
+  if (!userExists) {
+    throw new Error('Usuário não encontrado')
+  } else {
+    return userExists
+  }
+}
