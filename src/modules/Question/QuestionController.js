@@ -54,10 +54,10 @@ exports.infoQuestion = async (req, res) => {
       )
 
       questionsWithAnswer.push({
-        _id: questions._id,
-        technology_id: questions.technology_id,
+        _id: question._id,
+        technology_id: question.technology_id,
         description: question.description,
-        topic: questions.topic,
+        topic: question.topic,
         answers,
       })
     }
