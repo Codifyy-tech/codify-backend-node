@@ -1,4 +1,7 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-var */
 const TheoryTestRepository = require('./TheoryTestRepository')
+const AnswerService = require('../Answer/AnswerService')
 const ValidationContract = require('../../services/validatorService')
 
 exports.registerTheoryTest = async (req, res) => {
@@ -44,5 +47,42 @@ exports.listTheoryTests = async (req, res) => {
     })
   } catch (e) {
     res.status(400).json({ message: e.message })
+  }
+}
+
+exports.resultTheoryTest = async (req, res) => {
+  const { answer_list } = req.body
+
+  const contract = new ValidationContract()
+  contract.isRequired(answer_list, 'O campo questões não pode ser vazio')
+
+  if (!contract.isValid()) {
+    res.status(400).send(contract.errors()).end()
+    return
+  }
+
+  try {
+    var corrects = 0
+
+    for (const answer of answer_list) {
+      const isCorrect = await AnswerService.checkAnswerIsCorrect(
+        answer[Object.keys(answer)[0]],
+        true,
+      )
+
+      if (isCorrect) {
+        corrects++
+      }
+    }
+
+    const acertos = Math.round((corrects * 100) / answer_list.length)
+
+    res.status(201).json({
+      message: `Você acertou ${acertos}%`,
+    })
+  } catch (e) {
+    res.status(400).json({
+      message: e.message,
+    })
   }
 }

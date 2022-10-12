@@ -9,6 +9,12 @@ router.post(
   TheoryTestRController.registerTheoryTest,
 )
 
+router.post(
+  '/theoryTest/result',
+  AuthService.checkToken,
+  TheoryTestRController.resultTheoryTest,
+)
+
 router.get(
   '/list/theoryTest',
   AuthService.checkToken,

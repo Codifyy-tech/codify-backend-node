@@ -22,7 +22,7 @@ exports.findOne = async (answer_id, projection) => {
   const userExists = await Answer.findOne(answer_id, projection)
 
   if (!userExists) {
-    throw new Error('Usuário não encontrado')
+    throw new Error('Resposta não encontrada')
   } else {
     return userExists
   }
