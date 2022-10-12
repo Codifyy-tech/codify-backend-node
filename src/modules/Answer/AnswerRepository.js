@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb')
 const Answer = require('./Answer')
 
 exports.create = async (questionInfo) => {
@@ -19,11 +20,31 @@ exports.find = async (filter, pageSize, page, projection) => {
 }
 
 exports.findOne = async (answer_id, projection) => {
-  const userExists = await Answer.findOne(answer_id, projection)
+  const answerExists = await Answer.findOne(answer_id, projection)
 
-  if (!userExists) {
+  if (!answerExists) {
     throw new Error('Resposta não encontrada')
   } else {
-    return userExists
+    return answerExists
+  }
+}
+
+exports.findById = async (questionId) => {
+  const answerExists = await Answer.findById(ObjectId(questionId))
+
+  if (answerExists) {
+    return answerExists
+  } else {
+    throw new Error('Resposta não cadastrada')
+  }
+}
+
+exports.findByQuestion = async (filter, projection) => {
+  const answerExists = await Answer.findOne(filter, projection)
+
+  if (!answerExists) {
+    throw new Error('Resposta não encontrada')
+  } else {
+    return answerExists
   }
 }
