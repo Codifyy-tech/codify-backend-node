@@ -75,10 +75,12 @@ exports.resultTheoryTest = async (req, res) => {
       }
     }
 
-    const acertos = Math.round((corrects * 100) / answer_list.length)
+    const percentageCorrects = Math.round((corrects * 100) / answer_list.length)
 
     res.status(201).json({
-      message: `Você acertou ${acertos}%`,
+      data: {
+        result: percentageCorrects,
+      },
     })
   } catch (e) {
     res.status(400).json({
