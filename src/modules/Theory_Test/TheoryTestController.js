@@ -76,10 +76,12 @@ exports.resultTheoryTest = async (req, res) => {
     }
 
     const percentageCorrects = Math.round((corrects * 100) / answer_list.length)
+    const approved = percentageCorrects >= 80
 
     res.status(201).json({
       data: {
         result: percentageCorrects,
+        approved,
       },
     })
   } catch (e) {
