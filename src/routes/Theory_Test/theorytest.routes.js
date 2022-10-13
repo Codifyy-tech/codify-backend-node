@@ -1,4 +1,5 @@
 const TheoryTestRController = require('../../modules/Theory_Test/TheoryTestController')
+const UserTheoryTestController = require('../../modules/User_Theory_Test/UserTheoryTestController')
 const AuthService = require('../../services/authService')
 const express = require('express')
 const router = express.Router()
@@ -20,4 +21,11 @@ router.get(
   AuthService.checkToken,
   TheoryTestRController.listTheoryTests,
 )
+
+router.get(
+  '/theoryTest/approved/:id',
+  AuthService.checkToken,
+  UserTheoryTestController.verifyUserPassed,
+)
+
 module.exports = router

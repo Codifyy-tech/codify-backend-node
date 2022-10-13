@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-var */
 const TheoryTestRepository = require('./TheoryTestRepository')
+const UserTheoryTestRepository = require('../User_Theory_Test/UserTheoryTestRepository')
 const AnswerService = require('../Answer/AnswerService')
 const ValidationContract = require('../../services/validatorService')
 const QuestionService = require('../Question/QuestionService')
@@ -52,7 +53,8 @@ exports.listTheoryTests = async (req, res) => {
 }
 
 exports.resultTheoryTest = async (req, res) => {
-  const { answer_list } = req.body
+  const current_user = req.user
+  const { answer_list, theory_test_id } = req.body
 
   const contract = new ValidationContract()
   contract.isRequired(answer_list, 'O campo questões não pode ser vazio')
@@ -78,6 +80,12 @@ exports.resultTheoryTest = async (req, res) => {
 
     const percentageCorrects = Math.round((corrects * 100) / answer_list.length)
     const approved = percentageCorrects >= 80
+
+    await UserTheoryTestRepository.update(
+      current_user,
+      theory_test_id,
+      approved,
+    )
 
     res.status(201).json({
       data: {
