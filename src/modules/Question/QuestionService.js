@@ -15,6 +15,7 @@ exports.checkAnswerQuestion = async (answerUserId, questionId) => {
     question: questionInfo.description,
     answer_user: answerInfo.description,
     answer_correct: questionAnswerCorrect.description,
+    topic: questionInfo.topic,
     scored,
   }
 }

@@ -15,7 +15,7 @@ exports.findOne = async (CourseInfo, projection) => {
   const CourseExists = await Course.findOne(CourseInfo, projection)
 
   if (!CourseExists) {
-    throw new Error('Usuário não encontrado')
+    throw new Error('Curso não encontrado')
   } else {
     return CourseExists
   }

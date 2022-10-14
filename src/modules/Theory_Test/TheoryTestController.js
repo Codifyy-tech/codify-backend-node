@@ -5,6 +5,7 @@ const UserTheoryTestRepository = require('../User_Theory_Test/UserTheoryTestRepo
 const AnswerService = require('../Answer/AnswerService')
 const ValidationContract = require('../../services/validatorService')
 const QuestionService = require('../Question/QuestionService')
+const TechnologyRepository = require('../Technology/TechnologyRepository')
 
 exports.registerTheoryTest = async (req, res) => {
   const { technology_id, level } = req.body
@@ -67,6 +68,12 @@ exports.resultTheoryTest = async (req, res) => {
   try {
     var corrects = 0
     var questions = []
+    var topics = []
+
+    const theoryTest = await TheoryTestRepository.findById(theory_test_id)
+    const technology = await TechnologyRepository.findById(
+      theoryTest.technology_id,
+    )
 
     for (const answer of answer_list) {
       const questionInfo = await QuestionService.checkAnswerQuestion(
@@ -76,6 +83,7 @@ exports.resultTheoryTest = async (req, res) => {
 
       if (questionInfo.scored === true) corrects++
       questions.push(questionInfo)
+      if (questionInfo.scored === false) topics.push(questionInfo.topic)
     }
 
     const percentageCorrects = Math.round((corrects * 100) / answer_list.length)
@@ -92,6 +100,8 @@ exports.resultTheoryTest = async (req, res) => {
         result: percentageCorrects,
         approved,
         questions,
+        topics,
+        technology,
       },
     })
   } catch (e) {

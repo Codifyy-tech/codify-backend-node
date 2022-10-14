@@ -1,7 +1,11 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-var */
 const ValidationContract = require('../../services/validatorService')
 const CourseRepository = require('./CourseRepository')
 const TechnologyRepository = require('../Technology/TechnologyRepository')
 const UserClassService = require('../User_Class/UserClassService')
+const ClassesService = require('../Class/ClassService')
+const moment = require('moment/moment')
 
 exports.registerCourse = async (req, res) => {
   const { title, author, description, category, technology_id, topics, url } =
@@ -111,6 +115,14 @@ exports.listCourse = async (req, res) => {
         course.technology_id,
       )
 
+      const classes = await ClassesService.getClass(course._id)
+      var totalHours = 0
+
+      for (const classInfo of classes) {
+        const hours = moment.duration(classInfo.duration).asSeconds() / 3600
+        totalHours += hours
+      }
+
       list_course.push({
         _id: course._id,
         title: course.title,
@@ -119,6 +131,8 @@ exports.listCourse = async (req, res) => {
         description: course.description,
         category: course.category,
         topics: course.topics,
+        total_classes: classes.length,
+        total_hours: Math.ceil(totalHours),
         url: course.url,
       })
     }
