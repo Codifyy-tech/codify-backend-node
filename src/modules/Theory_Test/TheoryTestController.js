@@ -68,7 +68,8 @@ exports.resultTheoryTest = async (req, res) => {
   try {
     var corrects = 0
     var questions = []
-    var topics = []
+    var wrong_topics = []
+    var right_topics = []
 
     const theoryTest = await TheoryTestRepository.findById(theory_test_id)
     const technology = await TechnologyRepository.findById(
@@ -81,9 +82,12 @@ exports.resultTheoryTest = async (req, res) => {
         Object.keys(answer)[0],
       )
 
-      if (questionInfo.scored === true) corrects++
+      if (questionInfo.scored === true) {
+        corrects++
+        right_topics.push(questionInfo.topic)
+      }
       questions.push(questionInfo)
-      if (questionInfo.scored === false) topics.push(questionInfo.topic)
+      if (questionInfo.scored === false) wrong_topics.push(questionInfo.topic)
     }
 
     const percentageCorrects = Math.round((corrects * 100) / answer_list.length)
@@ -100,7 +104,8 @@ exports.resultTheoryTest = async (req, res) => {
         result: percentageCorrects,
         approved,
         questions,
-        topics,
+        right_topics,
+        wrong_topics,
         technology,
       },
     })
