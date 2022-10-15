@@ -40,8 +40,8 @@ exports.listTheoryTests = async (req, res) => {
 
   try {
     const filter = {}
-    filter.technology_id = { $in: technology_id }
-    filter.level = { $in: level }
+    if (technology_id) filter.technology_id = { $in: technology_id }
+    if (level) filter.level = { $in: level }
 
     const theoryTests = await TheoryTestRepository.find(filter)
 
