@@ -3,7 +3,7 @@ const TheoryTest = require('./Theory_Test')
 
 exports.create = async (theoryTestInfo) => {
   const testAlreadyExists = await TheoryTest.findOne({
-    repository_url: theoryTestInfo.repository_url,
+    technology_id: theoryTestInfo.technology_id,
   })
 
   if (!testAlreadyExists) {
