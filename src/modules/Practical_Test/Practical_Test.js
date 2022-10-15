@@ -25,6 +25,11 @@ const schema = new Schema({
     type: String,
     required: true,
   },
+  issue: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
 })
 
 module.exports = model('Practical_Test', schema)

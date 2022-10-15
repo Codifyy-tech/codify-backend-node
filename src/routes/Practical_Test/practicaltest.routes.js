@@ -21,4 +21,10 @@ router.get(
   PracticalTestController.infoPracticalTests,
 )
 
+router.get(
+  '/practicalTest/content/:id',
+  AuthService.checkToken,
+  PracticalTestController.infoContentPracticalTests,
+)
+
 module.exports = router

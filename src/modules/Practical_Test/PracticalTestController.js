@@ -2,6 +2,9 @@ const PracticalTestRepository = require('./PracticalTestRepository')
 const ValidationContract = require('../../services/validatorService')
 const TechnologyRepository = require('../Technology/TechnologyRepository')
 const CompanyRepository = require('../Company/CompanyRepository')
+const TheoryTestRepository = require('../Theory_Test/TheoryTestRepository')
+const UserTheoryTestService = require('../User_Theory_Test/UserTheoryTestService')
+const { apigit } = require('../../services/git')
 
 exports.registerPracticalTest = async (req, res) => {
   const {
@@ -11,6 +14,7 @@ exports.registerPracticalTest = async (req, res) => {
     technology_id,
     level,
     repository_url,
+    issue,
   } = req.body
 
   const contract = new ValidationContract()
@@ -20,6 +24,7 @@ exports.registerPracticalTest = async (req, res) => {
   contract.isRequired(company_id, 'O campo empresa não pode ser vazio')
   contract.isRequired(level, 'O campo nível não pode ser vazio')
   contract.isRequired(repository_url, 'O campo repositório não pode ser vazio')
+  contract.isRequired(issue, 'O campo issue não pode ser vazio')
 
   if (!contract.isValid()) {
     res.status(400).send(contract.errors()).end()
@@ -34,6 +39,7 @@ exports.registerPracticalTest = async (req, res) => {
       technology_id,
       repository_url,
       level,
+      issue,
     })
 
     res.status(201).json({
@@ -102,7 +108,39 @@ exports.infoPracticalTests = async (req, res) => {
         company: companyInfo,
         technology_id: technologyInfo,
         repository_url: practicalTestsInfo.repository_url,
+        issue: practicalTestsInfo.issue,
         level: practicalTestsInfo.level,
+      },
+    })
+  } catch (e) {
+    res.status(400).json({ message: e.message })
+  }
+}
+
+exports.infoContentPracticalTests = async (req, res) => {
+  const { id } = req.params
+  const current_user = req.user
+
+  try {
+    const practicalTestsInfo = await PracticalTestRepository.findById(id)
+    const theoryTestInfo = await TheoryTestRepository.find({
+      technology_id: practicalTestsInfo.technology_id,
+    })
+    const isApproved = await UserTheoryTestService.verifyUserPassed(
+      current_user,
+      theoryTestInfo[0]._id,
+    )
+
+    if (!isApproved) throw new Error('Teste não liberado para seu usuário')
+
+    const { data } = await apigit.get(
+      `/repos/Codifyy-tech/practical-tests/issues/${practicalTestsInfo.issue}`,
+    )
+
+    res.status(200).send({
+      data: {
+        title: data.title,
+        body: data.body,
       },
     })
   } catch (e) {

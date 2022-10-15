@@ -14,12 +14,11 @@ exports.update = async (userId, theoryTestId, approved) => {
 }
 
 exports.findOne = async (userId, theoryTestId) => {
+  console.log(userId, theoryTestId)
   const resultExists = await UserTheoryTest.findOne({
     user_id: userId,
     theory_test_id: theoryTestId,
   })
-
-  console.log(resultExists)
 
   if (!resultExists) {
     return false
