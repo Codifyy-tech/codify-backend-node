@@ -57,7 +57,7 @@ exports.checkAdmin = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.SALT_KEY)
     const userExists = await UserService.checkUserIsValid(decoded._id)
 
-    if (userExists.type === 'user' || userExists.type === 'admin') {
+    if (userExists.type === 'company' || userExists.type === 'admin') {
       next()
     } else {
       res.status(403).json({

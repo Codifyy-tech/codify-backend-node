@@ -42,13 +42,16 @@ exports.authenticateUser = async (req, res) => {
         email,
         password: md5(password + process.env.SALT_KEY),
       },
-      { name: 1, email: 1, firstLetter: 1 },
+      { name: 1, email: 1, firstLetter: 1, type: 1 },
     )
 
     const token = await AuthService.generateToken(userInfo)
 
+    console.log(userInfo.type)
+
     res.status(200).send({
       token,
+      type: userInfo.type,
     })
   } catch (e) {
     res.status(400).json({ message: e.message })
@@ -199,6 +202,28 @@ exports.editInfo = async (req, res) => {
 
     res.status(200).json({
       data: 'Senha modificada com sucesso',
+    })
+  } catch (e) {
+    res.status(400).json({ message: e.message })
+  }
+}
+
+exports.dashboard = async (req, res) => {
+  try {
+    const maleUsers = await UserRepository.find({
+      genre: 'H',
+    })
+    const femaleUsers = await UserRepository.find({
+      genre: 'M',
+    })
+    const nonBinaryUsers = await UserRepository.find({
+      genre: 'NB',
+    })
+
+    res.status(200).send({
+      male: maleUsers.length,
+      female: femaleUsers.length,
+      non_binary: nonBinaryUsers.length,
     })
   } catch (e) {
     res.status(400).json({ message: e.message })

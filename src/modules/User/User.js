@@ -27,7 +27,7 @@ const schema = new Schema({
   },
   genre: {
     type: String,
-    enum: ['H', 'M', 'NB', 'NR'],
+    enum: ['H', 'M', 'NB', 'NI'],
   },
   cep: {
     type: Number,
@@ -81,7 +81,7 @@ const schema = new Schema({
   type: {
     type: String,
     required: true,
-    enum: ['user', 'admin'],
+    enum: ['user', 'admin', 'company'],
     default: 'user',
   },
 })

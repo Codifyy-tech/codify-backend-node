@@ -9,4 +9,6 @@ router.post('/user/register', UserController.signUp)
 
 router.put('/edit', AuthService.checkToken, UserController.editInfo)
 
+router.get('/dashboard', AuthService.checkAdmin, UserController.dashboard)
+
 module.exports = router
