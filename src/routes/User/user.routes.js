@@ -10,7 +10,7 @@ router.post('/user/register', UserController.signUp)
 router.put('/edit', AuthService.checkToken, UserController.editInfo)
 
 router.get(
-  '/dashboard/user',
+  '/dashboard/user/:id',
   AuthService.checkAdmin,
   UserController.infoDashboardUser,
 )

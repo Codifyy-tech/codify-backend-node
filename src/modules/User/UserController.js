@@ -315,18 +315,18 @@ exports.listUsers = async (req, res) => {
 }
 
 exports.infoDashboardUser = async (req, res) => {
-  const { user_id } = req.body
+  const { id } = req.params
 
   try {
     const userInfo = await UserRepository.findOne(
       {
-        _id: user_id,
+        _id: id,
       },
       { name: 1, email: 1, firstLetter: 1 },
     )
 
     const courses_registered = await UserClassService.getRegisteredUserCourses(
-      user_id,
+      id,
     )
 
     res.status(200).send({
