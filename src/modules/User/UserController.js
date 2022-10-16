@@ -220,10 +220,19 @@ exports.dashboard = async (req, res) => {
       genre: 'NB',
     })
 
+    const uninformed = await UserRepository.find({
+      genre: 'NI',
+    })
+    const total = await UserRepository.find({
+      genre: 'NI',
+    })
+
     res.status(200).send({
       male: maleUsers.length,
       female: femaleUsers.length,
       non_binary: nonBinaryUsers.length,
+      uninformed: uninformed.length,
+      total: total.length,
     })
   } catch (e) {
     res.status(400).json({ message: e.message })
