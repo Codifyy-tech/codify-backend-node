@@ -293,11 +293,13 @@ exports.listUsers = async (req, res) => {
         rank.color = '#44CAE9'
       }
 
+      const array_name = user.name.split(' ')
+
       list_user.push({
         _id: user._id,
         first_letter: user.firstLetter,
         email: user.email,
-        name: user.name,
+        name: `${array_name[0]} ${array_name[array_name.length - 1]}`,
         rank,
       })
 
