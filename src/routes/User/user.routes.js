@@ -11,4 +11,6 @@ router.put('/edit', AuthService.checkToken, UserController.editInfo)
 
 router.get('/dashboard', AuthService.checkAdmin, UserController.dashboard)
 
+router.get('/user/list', AuthService.checkAdmin, UserController.listUsers)
+
 module.exports = router

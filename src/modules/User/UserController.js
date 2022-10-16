@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 const ValidationContract = require('../../services/validatorService')
 const UserClassService = require('../User_Class/UserClassService')
 const AuthService = require('../../services/authService')
@@ -5,6 +6,7 @@ const UserRepository = require('./UserRepository')
 const UserService = require('./UserService')
 const mailService = require('../../services/mailService')
 const utility = require('../../utils/utility')
+const UserCourseRepository = require('../../modules/User_Course/UserCourseRepository')
 const md5 = require('md5')
 
 exports.checkToken = async (req, res) => {
@@ -162,6 +164,17 @@ exports.infoUser = async (req, res) => {
       current_user,
     )
 
+    const alreadyCompletedCourse = courses_registered.filter(
+      ({ progress }) => progress === 100,
+    )
+
+    for (const course of alreadyCompletedCourse) {
+      await UserCourseRepository.registerCompletedCourse(
+        current_user,
+        course.course_info._id,
+      )
+    }
+
     res.status(200).send({
       userInfo,
       courses_registered,
@@ -231,6 +244,68 @@ exports.dashboard = async (req, res) => {
       non_binary: nonBinaryUsers.length,
       uninformed: uninformed.length,
       total: total.length,
+    })
+  } catch (e) {
+    res.status(400).json({ message: e.message })
+  }
+}
+
+exports.listUsers = async (req, res) => {
+  try {
+    const list_user = []
+    // eslint-disable-next-line no-var
+    var rank = {}
+
+    const users = await UserRepository.find({})
+
+    for (const user of users) {
+      const quantityCourseCompleted = await UserCourseRepository.find({
+        user_id: user.id,
+      })
+
+      if (
+        quantityCourseCompleted.length >= 0 &&
+        quantityCourseCompleted.length <= 3
+      ) {
+        rank.name = 'bronze'
+        rank.color = '#CD7F32'
+      }
+      if (
+        quantityCourseCompleted.length > 3 &&
+        quantityCourseCompleted.length <= 6
+      ) {
+        rank.name = 'silver'
+        rank.color = '#ACAFAC'
+      }
+      if (
+        quantityCourseCompleted.length > 6 &&
+        quantityCourseCompleted.length <= 10
+      ) {
+        console.log('oi')
+        rank.name = 'gold'
+        rank.color = '#DAA520'
+      }
+      if (
+        quantityCourseCompleted.length > 10 &&
+        quantityCourseCompleted.length <= 3
+      ) {
+        rank.name = 'diamond'
+        rank.color = '#44CAE9'
+      }
+
+      list_user.push({
+        _id: user._id,
+        first_letter: user.firstLetter,
+        email: user.email,
+        name: user.name,
+        rank,
+      })
+
+      rank = {}
+    }
+
+    res.status(200).send({
+      list_user,
     })
   } catch (e) {
     res.status(400).json({ message: e.message })
