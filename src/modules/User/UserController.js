@@ -223,9 +223,7 @@ exports.dashboard = async (req, res) => {
     const uninformed = await UserRepository.find({
       genre: 'NI',
     })
-    const total = await UserRepository.find({
-      genre: 'NI',
-    })
+    const total = await UserRepository.find({})
 
     res.status(200).send({
       male: maleUsers.length,
