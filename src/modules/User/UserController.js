@@ -313,3 +313,27 @@ exports.listUsers = async (req, res) => {
     res.status(400).json({ message: e.message })
   }
 }
+
+exports.infoDashboardUser = async (req, res) => {
+  const { user_id } = req.body
+
+  try {
+    const userInfo = await UserRepository.findOne(
+      {
+        _id: user_id,
+      },
+      { name: 1, email: 1, firstLetter: 1 },
+    )
+
+    const courses_registered = await UserClassService.getRegisteredUserCourses(
+      user_id,
+    )
+
+    res.status(200).send({
+      userInfo,
+      courses_registered,
+    })
+  } catch (e) {
+    res.status(400).json({ message: e.message })
+  }
+}

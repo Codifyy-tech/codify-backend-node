@@ -9,6 +9,12 @@ router.post('/user/register', UserController.signUp)
 
 router.put('/edit', AuthService.checkToken, UserController.editInfo)
 
+router.get(
+  '/dashboard/user',
+  AuthService.checkAdmin,
+  UserController.infoDashboardUser,
+)
+
 router.get('/dashboard', AuthService.checkAdmin, UserController.dashboard)
 
 router.get('/user/list', AuthService.checkAdmin, UserController.listUsers)
