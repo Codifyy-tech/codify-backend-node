@@ -317,6 +317,8 @@ exports.listUsers = async (req, res) => {
 exports.infoDashboardUser = async (req, res) => {
   const { id } = req.params
 
+  const rank = {}
+
   try {
     const userInfo = await UserRepository.findOne(
       {
@@ -329,8 +331,43 @@ exports.infoDashboardUser = async (req, res) => {
       id,
     )
 
+    const quantityCourseCompleted = await UserCourseRepository.find({
+      user_id: id,
+    })
+
+    if (
+      quantityCourseCompleted.length >= 0 &&
+      quantityCourseCompleted.length <= 3
+    ) {
+      rank.name = 'bronze'
+      rank.color = '#CD7F32'
+    }
+    if (
+      quantityCourseCompleted.length > 3 &&
+      quantityCourseCompleted.length <= 6
+    ) {
+      rank.name = 'silver'
+      rank.color = '#ACAFAC'
+    }
+    if (
+      quantityCourseCompleted.length > 6 &&
+      quantityCourseCompleted.length <= 10
+    ) {
+      console.log('oi')
+      rank.name = 'gold'
+      rank.color = '#DAA520'
+    }
+    if (
+      quantityCourseCompleted.length > 10 &&
+      quantityCourseCompleted.length <= 3
+    ) {
+      rank.name = 'diamond'
+      rank.color = '#44CAE9'
+    }
+
     res.status(200).send({
       userInfo,
+      level: rank,
       courses_registered,
     })
   } catch (e) {
