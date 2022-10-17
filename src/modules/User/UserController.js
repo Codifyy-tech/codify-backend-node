@@ -322,7 +322,7 @@ exports.infoDashboardUser = async (req, res) => {
       {
         _id: id,
       },
-      { name: 1, email: 1, firstLetter: 1 },
+      { name: 1, email: 1, firstLetter: 1, genre: 1 },
     )
 
     const courses_registered = await UserClassService.getRegisteredUserCourses(
